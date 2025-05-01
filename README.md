@@ -1,4 +1,4 @@
-Using Rekor metadata to verify binaries - PoF
+Using Rekor metadata to verify binaries - PoC
 
 For now:
 go test -v -short
