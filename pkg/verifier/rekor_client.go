@@ -49,7 +49,7 @@ func (c *RekorClient) retrieveUUID(sha string) (*UUID, error) {
     requestPayload, err := json.Marshal(RetrieveUUIDRequest{Hash: "sha256:" + sha})
 
     if err != nil {
-		log.StdLogger.Println(err.Error())
+		log.StdOutLogger.Println(err.Error())
 		return nil, err
 	}
 
@@ -58,19 +58,19 @@ func (c *RekorClient) retrieveUUID(sha string) (*UUID, error) {
 	rawResponse, err := c.HTTPClient.Post(retrieveUrl, "application/json", request)
 
     if err != nil {
-		log.StdLogger.Println(err.Error())
+		log.StdOutLogger.Println(err.Error())
         return nil, err
 	}
 
 	if rawResponse.StatusCode != 200 {
-		log.StdLogger.Println(rawResponse.Status)
+		log.StdOutLogger.Println(rawResponse.Status)
         return nil, err
 	}
 
 	body, err := io.ReadAll(rawResponse.Body)
 	
     if err != nil {
-		log.StdLogger.Println(err.Error())
+		log.StdOutLogger.Println(err.Error())
         return nil, err
 	}
     
@@ -79,7 +79,7 @@ func (c *RekorClient) retrieveUUID(sha string) (*UUID, error) {
 	err = json.Unmarshal([]byte(body), &response)
 
 	if err != nil {
-		log.StdLogger.Println(err.Error())
+		log.StdOutLogger.Println(err.Error())
         return nil, err
 	}
 
@@ -113,19 +113,19 @@ func (c *RekorClient) logEntry(uuid UUID) (*DecodedBody, error) {
     rawResponse, err := c.HTTPClient.Get(c.BaseURL + logEntryEndpoint + string(uuid))
 
 	if err != nil {
-		log.StdLogger.Println(err.Error())
+		log.StdOutLogger.Println(err.Error())
         return nil, err
 	}
 
 	if rawResponse.StatusCode != 200 {
-		log.StdLogger.Println(rawResponse.Status)
+		log.StdOutLogger.Println(rawResponse.Status)
         return nil, err
 	}
 
     body, err := io.ReadAll(rawResponse.Body)
 
 	if err != nil {
-		log.StdLogger.Println(err.Error())
+		log.StdOutLogger.Println(err.Error())
         return nil, err
 	}
 
@@ -133,7 +133,7 @@ func (c *RekorClient) logEntry(uuid UUID) (*DecodedBody, error) {
 
 	err = json.Unmarshal([]byte(body), &logEntryResponse)
 	if err != nil {
-		log.StdLogger.Println(err.Error())	
+		log.StdOutLogger.Println(err.Error())	
         return nil, err
 	}
 
@@ -143,7 +143,7 @@ func (c *RekorClient) logEntry(uuid UUID) (*DecodedBody, error) {
 
 	err = json.Unmarshal(*v, &logEntry)
 	if err != nil {
-		log.StdLogger.Println(err.Error())	
+		log.StdOutLogger.Println(err.Error())	
         return nil, err
 	}
 
@@ -151,7 +151,7 @@ func (c *RekorClient) logEntry(uuid UUID) (*DecodedBody, error) {
 
 	data, err := base64.StdEncoding.DecodeString(decodedBodyString)
     if err != nil {
-		log.StdLogger.Println(err.Error())
+		log.StdOutLogger.Println(err.Error())
         return nil, err
 	}
 
@@ -159,7 +159,7 @@ func (c *RekorClient) logEntry(uuid UUID) (*DecodedBody, error) {
 
 	err = json.Unmarshal(data, &decodedBody)
 	if err != nil {
-		log.StdLogger.Println(err.Error())
+		log.StdOutLogger.Println(err.Error())
         return nil, err	
 	}
 
@@ -174,7 +174,7 @@ func extractCertificate(b *DecodedBody) (*x509.Certificate, error) {
     decodedBody, err := base64.StdEncoding.DecodeString(b.Spec.Signature.PublicKey.Content)
     
     if err != nil {
-        log.StdLogger.Println(err.Error())	
+        log.StdOutLogger.Println(err.Error())	
         return nil, err
     }
 
@@ -182,14 +182,14 @@ func extractCertificate(b *DecodedBody) (*x509.Certificate, error) {
 
     if (pemBlock == nil) {
         err = errors.New("can't decode certificate data")
-        log.StdLogger.Println(err.Error())	
+        log.StdOutLogger.Println(err.Error())	
         return nil, err
     }
 
 	cert, err := x509.ParseCertificate(pemBlock.Bytes)
 
 	if err != nil {
-		log.StdLogger.Println(err.Error())
+		log.StdOutLogger.Println(err.Error())
         return nil, err	
 	}
 
@@ -205,7 +205,7 @@ func extractSignature(b *DecodedBody) (*Signature, error) {
     sig, err := base64.StdEncoding.DecodeString(b.Spec.Signature.Content)
 
     if err != nil {
-		log.StdLogger.Println(err.Error())
+		log.StdOutLogger.Println(err.Error())
         return nil, err	
 	}
 

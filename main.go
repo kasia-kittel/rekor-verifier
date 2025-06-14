@@ -7,7 +7,7 @@ import (
 
 
 func main() {
-	log.StdLogger.Println("Starting")
+	log.StdOutLogger.Println("Starting")
 
 	cmd.Execute()
 }

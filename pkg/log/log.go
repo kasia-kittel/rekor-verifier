@@ -5,9 +5,9 @@ import (
 	"os"
 )
 
-var StdLogger = createStdLogger()
+var StdOutLogger = createStdOutLogger()
 
-func createStdLogger() *log.Logger {
+func createStdOutLogger() *log.Logger {
 	log := log.New(os.Stdout, "rekor-verifier ", log.LstdFlags)
 	return log
 }
