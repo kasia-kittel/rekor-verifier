@@ -5,17 +5,15 @@ on:
     branches: main
 
 jobs:
-  build:
-
+  test_and_build:
+    name: Simply run test and build and artifact
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4
+      - name: Check out repository code
+      - uses: actions/checkout@v4
 
-    - name: Install dependencies
+      - name: Run test
+        run: make test
 
-    - name: Run test
-      run: make check
-
-    - name: Run build
-      run: make build
+      - name: Run build
+        run: make build
