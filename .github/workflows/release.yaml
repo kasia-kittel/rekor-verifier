@@ -39,8 +39,9 @@ jobs:
               --repo="$GITHUB_REPOSITORY" \
               --title="${tag#v}" \
               --generate-notes
-              
-      - name: Upload binary
-        uses: actions/upload-artifact@v4
+
+      - uses: Shopify/upload-to-release@v1
         with:
+          name: main
           path: bin/main
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
