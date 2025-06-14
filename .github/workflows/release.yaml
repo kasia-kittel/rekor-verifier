@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  attestations: write
 
 jobs:
   test_and_build:
@@ -34,6 +35,11 @@ jobs:
 
       - name: Run build
         run: make build
+
+      - name: Attest
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: '${{ github.workspace }}/bin'
 
       - name: Create release
         env:
