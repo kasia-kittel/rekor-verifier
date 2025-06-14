@@ -39,7 +39,8 @@ jobs:
               --repo="$GITHUB_REPOSITORY" \
               --title="${tag#v}" \
               --generate-notes
-
-      - uses: actions/upload-artifact@v4
-        name: Upload binary
-        path: bin/main
+              
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          path: bin/main
