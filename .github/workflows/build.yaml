@@ -1,0 +1,21 @@
+name: Pipeline tools builder
+on:
+  workflow_dispatch: #TO DELETE after testing
+  push:
+    branches: main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies
+
+    - name: Run test
+      run: make check
+
+    - name: Run build
+      run: make build
