@@ -37,7 +37,7 @@ func (v CertificateVerifier) do() (*VerificationResult, error){
 		hexSha, err := hex.DecodeString(v.sha)
 
 		if err != nil {
-			log.StdLogger.Fatalln(err.Error())
+			log.StdOutLogger.Fatalln(err.Error())
 			return nil, err	
 		}
 
@@ -54,13 +54,13 @@ func VerifyFile(path string) bool {
 
 	err := utils.CheckPathToFile(path)
 	if err != nil {
-		log.StdLogger.Fatalln(err.Error())
+		log.StdOutLogger.Fatalln(err.Error())
 	}
 
 
 	file, err := os.Open(path)
 	if err != nil {
-		log.StdLogger.Fatalln(err)
+		log.StdOutLogger.Fatalln(err)
 	}
 
 	defer file.Close()
@@ -78,22 +78,22 @@ func VerifySha(sha string) bool {
 	uuid, err := r.retrieveUUID(sha)
 
 	if err != nil {
-		log.StdLogger.Fatalln(err)
+		log.StdOutLogger.Fatalln(err)
 	}
 
 	b, err := r.logEntry(*uuid)
 	if err != nil {
-		log.StdLogger.Fatalln(err)
+		log.StdOutLogger.Fatalln(err)
 	}
 
 	cert, err := extractCertificate(b)
 	if err != nil {
-		log.StdLogger.Fatalln(err)
+		log.StdOutLogger.Fatalln(err)
 	}
 
 	sig, err := extractSignature(b)
 	if err != nil {
-		log.StdLogger.Fatalln(err)
+		log.StdOutLogger.Fatalln(err)
 	}
 
 	v := CertificateVerifier{

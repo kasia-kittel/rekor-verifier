@@ -33,7 +33,7 @@ var rootCmd = &cobra.Command{
 		}
 
 		if !res {
-			log.StdLogger.Println("Verification unsuccessful")
+			log.StdOutLogger.Println("Verification unsuccessful")
 			os.Exit(1)
 		}
 
@@ -49,7 +49,7 @@ func init() {
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		log.StdLogger.Fatalf("Oops. An error while executing rekor-verifier '%s'\n", err)
+		log.StdOutLogger.Fatalf("Oops. An error while executing rekor-verifier '%s'\n", err)
 		os.Exit(1)
 	}
 }
