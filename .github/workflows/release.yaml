@@ -44,8 +44,9 @@ jobs:
               --repo="$GITHUB_REPOSITORY" \
               --title="${tag#v}" \
               --generate-notes
-
-      - uses: Shopify/upload-to-release@v1
+            
+      - name: Upload artifact to GH release assets
+        uses: Shopify/upload-to-release@v2.0.0
         with:
           name: main
           path: bin/main
