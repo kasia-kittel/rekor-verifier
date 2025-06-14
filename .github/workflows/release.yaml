@@ -24,6 +24,12 @@ jobs:
       - name: Display the version of go that we have installed
         run: go version
 
+      - name: Run test
+        run: make test
+
+      - name: Run build
+        run: make build
+
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -33,3 +39,7 @@ jobs:
               --repo="$GITHUB_REPOSITORY" \
               --title="${tag#v}" \
               --generate-notes
+
+      - uses: actions/upload-artifact@v4
+        name: Upload binary
+        path: bin/main
