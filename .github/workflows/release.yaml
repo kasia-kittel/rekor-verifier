@@ -1,9 +1,14 @@
 name: Release
 on:
   workflow_dispatch: #TO DELETE after testing
-  push:
-    tags:
-      - "v*"
+    inputs:
+      release-tag:
+        description: "Release tag to test"
+        required: true
+        type: string
+  # push:
+  #   tags:
+  #     - "v*"
 
 permissions:
   contents: write
@@ -33,7 +38,7 @@ jobs:
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref_name }}
+          tag:  "${{ inputs.release-tag }}"
         run: |
           gh release create "$tag" \
               --repo="$GITHUB_REPOSITORY" \
