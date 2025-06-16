@@ -41,7 +41,7 @@ jobs:
         uses: actions/attest-build-provenance@v2.4.0
         with:
           subject-path: '${{ github.workspace }}/bin'
-                
+
       - name: Generate provenance
         uses: slsa-framework/github-actions-demo@v0.1
         with:
@@ -56,14 +56,14 @@ jobs:
         uses: anchore/sbom-action@v0.20.1
         with:
           path: ./
-          file: sbom.spdx.json
+          format: 'spdx-json'
+          output-file: 'sbom.spdx.json'
 
       - name: Attest SBOM
         uses: actions/attest-sbom@v2.4.0
         with:
           subject-path: ./
-          format: 'spdx-json'
-          output-file: 'sbom.spdx.json'
+          sbom-path: 'sbom.spdx.json'
 
       - name: Create release
         env:
