@@ -6,12 +6,14 @@ import (
 	"github.com/kasia-kittel/rekor-verifier/pkg/log"
 	"github.com/kasia-kittel/rekor-verifier/pkg/verifier"
 	"github.com/spf13/cobra"
+
+	"github.com/kasia-kittel/rekor-verifier/internal/version"
 )
 
 // TODO:
 // -r custom Rekor instance (could be set up by Viper)
 
-var Version string = "alpha" // set during build
+var Version string = version.BuildVersion() // set during build
 var path string
 var sha string
 
