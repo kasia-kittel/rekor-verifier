@@ -41,19 +41,7 @@ jobs:
         uses: actions/attest-build-provenance@v2.4.0
         with:
           subject-path: '${{ github.workspace }}/bin'
-
-      - name: Create release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag:  "${{ inputs.release-tag }}"
-        run: |
-          gh release create "$tag" \
-              --repo="$GITHUB_REPOSITORY" \
-              --title="${tag#v}" \
-              --generate-notes \
-              ./bin/main
-            
-      
+                
       - name: Generate provenance
         uses: slsa-framework/github-actions-demo@v0.1
         with:
