@@ -68,3 +68,21 @@ jobs:
         uses: anchore/sbom-action@v0.20.1
         with:
           path: ./
+          file: sbom.spdx.json
+
+      - name: Attest SBOM
+        uses: actions/attest-sbom@v2.4.0
+        with:
+          subject-path: ./
+          sbom-path: sbom.spdx.json
+
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag:  "${{ inputs.release-tag }}"
+        run: |
+          gh release create "$tag" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="${tag#v}" \
+              --generate-notes \
+              ./bin/main

@@ -1,0 +1,46 @@
+{
+    "_type": "https://in-toto.io/Statement/v1",
+    "subject": [
+        {
+            "name": "main",
+            "digest": {
+                "sha256": "b5b634dfcbfa956a5885f3f80102d45fdfbdc49ae5517e6a7eab27a55183302e"
+            }
+        }
+    ],
+    "predicateType": "https://slsa.dev/provenance/v1",
+    "predicate": {
+        "buildDefinition": {
+            "buildType": "https://actions.github.io/buildtypes/workflow/v1",
+            "externalParameters": {
+                "workflow": {
+                    "ref": "refs/heads/main",
+                    "repository": "https://github.com/kasia-kittel/rekor-verifier",
+                    "path": ".github/workflows/release.yaml"
+                }
+            },
+            "internalParameters": {
+                "github": {
+                    "event_name": "workflow_dispatch",
+                    "repository_id": "976167943",
+                    "repository_owner_id": "11980812",
+                    "runner_environment": "github-hosted"
+                }
+            },
+            "resolvedDependencies": [
+                {
+                    "uri": "git+https://github.com/kasia-kittel/rekor-verifier@refs/heads/main",
+                    "digest": {
+                        "gitCommit": "7a8270fb87b1a1890ba620b651507f573dc684dd"
+                    }
+                }
+            ]
+        },
+        "runDetails": {
+            "builder": {
+                "id": "https://github.com/kasia-kittel/rekor-verifier/.github/workflows/release.yaml@refs/heads/main"
+            },
+            "metadata": {
+                "invocationId": "https://github.com/kasia-kittel/rekor-verifier/actions/runs/15663436897/attempts/1"
+            }
+        }
