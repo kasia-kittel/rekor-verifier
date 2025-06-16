@@ -75,7 +75,7 @@ jobs:
         with:
           subject-path: ./
           format: 'spdx-json'
-          output-file: 'sbom.spdx.json
+          output-file: 'sbom.spdx.json'
 
       - name: Create release
         env:
