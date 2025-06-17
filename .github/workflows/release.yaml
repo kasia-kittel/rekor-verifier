@@ -6,9 +6,6 @@ on:
         description: "Release tag to test"
         required: true
         type: string
-  # push:
-  #   tags:
-  #     - "v*"
 
 permissions:
   id-token: write
@@ -56,14 +53,14 @@ jobs:
         uses: anchore/sbom-action@v0.20.1
         with:
           path: ./
-          format: 'spdx-json'
-          output-file: 'sbom.spdx.json'
+          format: cyclonedx-json
+          output-file: sbom.cyclonedx.json
 
       - name: Attest SBOM
         uses: actions/attest-sbom@v2.4.0
         with:
-          subject-path: ./
-          sbom-path: 'sbom.spdx.json'
+          subject-path: '${{ github.workspace }}/bin/main'
+          sbom-path: sbom.cyclonedx.json
 
       - name: Create release
         env:
