@@ -13,65 +13,65 @@ permissions:
   attestations: write
 
 jobs:
-  test_and_build:
-    name: Simply run test and build and artifact
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v4
+  # test_and_build:
+  #   name: Simply run test and build and artifact
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check out repository code
+  #       uses: actions/checkout@v4
 
-      - name: Set up Go
-        uses: actions/setup-go@v1
-        with:
-          go-version: 1.20
+  #     - name: Set up Go
+  #       uses: actions/setup-go@v1
+  #       with:
+  #         go-version: 1.20
 
-      - name: Display the version of go that we have installed
-        run: go version
+  #     - name: Display the version of go that we have installed
+  #       run: go version
 
-      - name: Run test
-        run: make test
+  #     - name: Run test
+  #       run: make test
 
-      - name: Run build
-        run: make build
+  #     - name: Run build
+  #       run: make build
 
-      - name: Attest
-        uses: actions/attest-build-provenance@v2.4.0
-        with:
-          subject-path: '${{ github.workspace }}/bin'
+  #     - name: Attest
+  #       uses: actions/attest-build-provenance@v2.4.0
+  #       with:
+  #         subject-path: '${{ github.workspace }}/bin'
 
-      - name: Generate provenance
-        uses: slsa-framework/github-actions-demo@v0.1
-        with:
-          artifact_path: ./bin/main
+  #     - name: Generate provenance
+  #       uses: slsa-framework/github-actions-demo@v0.1
+  #       with:
+  #         artifact_path: ./bin/main
 
-      - name: Upload provenance
-        uses: actions/upload-artifact@v4
-        with:
-          path: build.provenance
+  #     - name: Upload provenance
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         path: build.provenance
 
-      - name: Anchore SBOM Action
-        uses: anchore/sbom-action@v0.20.1
-        with:
-          path: ./
-          format: cyclonedx-json
-          output-file: sbom.cyclonedx.json
+  #     - name: Anchore SBOM Action
+  #       uses: anchore/sbom-action@v0.20.1
+  #       with:
+  #         path: ./
+  #         format: cyclonedx-json
+  #         output-file: sbom.cyclonedx.json
 
-      - name: Attest SBOM
-        uses: actions/attest-sbom@v2.4.0
-        with:
-          subject-path: '${{ github.workspace }}/bin/main'
-          sbom-path: sbom.cyclonedx.json
+  #     - name: Attest SBOM
+  #       uses: actions/attest-sbom@v2.4.0
+  #       with:
+  #         subject-path: '${{ github.workspace }}/bin/main'
+  #         sbom-path: sbom.cyclonedx.json
 
-      - name: Create release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag:  "${{ inputs.release-tag }}"
-        run: |
-          gh release create "$tag" \
-              --repo="$GITHUB_REPOSITORY" \
-              --title="${tag#v}" \
-              --generate-notes \
-              ./bin/main
+  #     - name: Create release
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         tag:  "${{ inputs.release-tag }}"
+  #       run: |
+  #         gh release create "$tag" \
+  #             --repo="$GITHUB_REPOSITORY" \
+  #             --title="${tag#v}" \
+  #             --generate-notes \
+  #             ./bin/main
 
   gen-sbom:
     runs-on: ubuntu-latest
@@ -83,3 +83,29 @@ jobs:
       with:
         name: sbom
         path: ${{ steps.gensbom.outputs.fileName }}
+  
+  go:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: 1.20
+    - uses: sigstore/cosign-installer@v3.8.2 # installs cosign
+    - uses: anchore/sbom-action/download-syft@v0.20.1 # installs syft
+    - name: GoReleaser Action
+      uses: goreleaser/goreleaser-action@v6.3.0
+      with:
+        version: '~> v2'
+        args: release --clean
+        workdir: ./
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/attest-build-provenance@v2
+      with:
+        subject-checksums: ./dist/checksums.txt
