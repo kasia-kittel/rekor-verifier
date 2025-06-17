@@ -107,7 +107,7 @@ jobs:
         args: release --clean
         workdir: ./
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH }}
     - uses: actions/attest-build-provenance@v2
       with:
         subject-checksums: ./dist/checksums.txt
