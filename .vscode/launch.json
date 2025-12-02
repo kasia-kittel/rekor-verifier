@@ -7,8 +7,8 @@
             "mode": "debug",
             "program": "main.go",
             "args": [
-                "-p",
-                "apko_0.20.1_linux_amd64.tar.gz"
+                "-s",
+                "b5b634dfcbfa956a5885f3f80102d45fdfbdc49ae5517e6a7eab27a55183302e"
             ],
 
         }
